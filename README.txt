@@ -1,1 +1,1 @@
-Place your catalog project in this directory.
+A course catalog website developed using Flask framework.

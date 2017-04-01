@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from models import Base
+from course_catalog.models import Base
 
 # Connect to Database and create database session
 engine = create_engine('sqlite:///course_catalog_datastore.db')

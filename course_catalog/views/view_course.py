@@ -4,8 +4,6 @@ from flask import Flask, render_template, request, redirect, jsonify, url_for, f
 from db_session import session
 
 
-@app.route('/')
-@app.route('/departments/')
-def showDepartments():
-    # return render_template("base.html")
-    return "Hello, Praveen!"
+@app.route('/departments/<int:dept_id>/courses/<course_id>/')  # NOQA
+def viewCourse(dept_id, course_id):
+    return "View course_id %s of dept_id %s" % (course_id, dept_id)

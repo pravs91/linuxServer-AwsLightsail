@@ -4,8 +4,6 @@ from flask import Flask, render_template, request, redirect, jsonify, url_for, f
 from db_session import session
 
 
-@app.route('/')
-@app.route('/departments/')
-def showDepartments():
-    # return render_template("base.html")
-    return "Hello, Praveen!"
+@app.route('/departments/new/', methods=['GET', 'POST'])
+def newDepartment():
+    return "This page is to create a new department."

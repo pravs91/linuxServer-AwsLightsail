@@ -4,8 +4,6 @@ from flask import Flask, render_template, request, redirect, jsonify, url_for, f
 from db_session import session
 
 
-@app.route('/')
-@app.route('/departments/')
-def showDepartments():
-    # return render_template("base.html")
-    return "Hello, Praveen!"
+@app.route('/departments/<int:dept_id>/courses/new/', methods=['GET', 'POST'])
+def newCourse(dept_id):
+    return "Create a new course under dept_id %s" % dept_id

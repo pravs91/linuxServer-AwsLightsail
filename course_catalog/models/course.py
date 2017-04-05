@@ -17,6 +17,7 @@ class Course(Base):
     description = Column(String())
     user = relationship(User)
     user_id = Column(Integer, ForeignKey('user.id'))
+    img_url = Column(String(400))
 
     @property
     def serialize(self):
@@ -29,5 +30,6 @@ class Course(Base):
             'credits': self.credits,
             'max_capacity': self.max_capacity,
             'description': self.description,
-            'user_id': self.user_id
+            'user_id': self.user_id,
+            'img_url': self.img_url
         }

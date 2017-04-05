@@ -1,0 +1,176 @@
+<html itemscope itemtype="http://schema.org/Article">
+<head>
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+
+    <!-- Font Awesome CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/catalog-homepage.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/catalog-item.css') }}">
+
+
+    <!--LOAD PRE-REQUISITES FOR GOOGLE SIGN IN -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+
+    <script src="//apis.google.com/js/client:platform.js?onload=start" async defer></script>
+
+    <script>
+      function start(){
+        gapi.load('auth2', function() {
+            // console.log("init gapi");
+            auth2 = gapi.auth2.init({
+              client_id: '912564362504-um5o30cb607sq9gr7kvfnphdcrhh1ob2.apps.googleusercontent.com',
+              // Scopes to request in addition to 'profile' and 'email'
+              scope: 'email'
+            });
+        });
+      }
+   </script>
+</head>
+
+<body>
+
+<script>
+    function gplusSignInCallback(authResult) {
+        if (authResult['code']) {
+          // Hide the sign-in button now that the user is authorized
+          // $('#signinButton').attr('style', 'display: none');
+          // Send the one-time-use code to the server, if the server responds, write a 'login successful' message to the web page and then redirect back to the main restaurants page
+          $.ajax({
+            type: 'POST',
+            url: '/gconnect?state={{STATE}}',
+            // Always include an `X-Requested-With` header in every AJAX request,
+            // to protect against CSRF attacks.
+            headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+            },            
+            processData: false,
+            data: authResult['code'],
+            contentType: 'application/octet-stream; charset=utf-8',
+            success: function(result) {
+              // Handle or verify the server response if necessary.
+              if (result) {
+                $('#result').html('Login Successful!</br>'+ result + '</br>Redirecting...')
+               setTimeout(function() {
+                window.location.href = "/departments";
+               }, 4000);
+                
+            } else if (authResult['error']) {
+                console.log('There was an error: ' + authResult['error']);
+            } else {
+              $('#result').html('Failed to make a server-side call. Check your configuration and console.');
+               }
+            }
+            
+          }); 
+        } 
+    } 
+</script>
+
+<script>
+    window.fbAsyncInit = function() {
+      FB.init({
+        appId      : '1832737680298755',
+        cookie     : true,  // enable cookies to allow the server to access 
+                            // the session
+        xfbml      : true,  // parse social plugins on this page
+        version    : 'v2.2' // use version 2.2
+      });
+    };
+    // Load the SDK asynchronously
+    (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      // console.log("Loading FB SDK again")
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_US/sdk.js";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+    // Here we run a very simple test of the Graph API after login is
+    // successful.  See statusChangeCallback() for when this call is made.
+    function FBsendTokenToServer() {
+      // var access_token = FB.getAuthResponse()['accessToken'];
+      var access_token;
+      FB.getLoginStatus(function(response){
+        console.log(response.status)
+        access_token = response.authResponse.accessToken;
+      })
+      console.log(access_token)
+      console.log('Welcome!  Fetching your information.... ');
+      FB.api('/me', function(response) {
+        console.log('Successful login for: ' + response.name);
+       $.ajax({
+        type: 'POST',
+        url: '/fbconnect?state={{STATE}}',
+        processData: false,
+        data: access_token,
+        contentType: 'application/octet-stream; charset=utf-8',
+        success: function(result) {
+          // Handle or verify the server response if necessary.
+          if (result) {
+            $('#result').html('Login Successful!</br>'+ result + '</br>Redirecting...')
+           setTimeout(function() {
+            window.location.href = "/departments";
+           }, 4000);
+            
+          } else {
+          $('#result').html('Failed to make a server-side call. Check your configuration and console.');
+           }
+        }
+        
+        });
+      });
+    }
+</script>
+
+<!-- <ul class="nav navbar-nav navbar-right">
+{% if username not in session %}
+    <li class="dropdown">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b>Login</b> <span class="caret"></span></a>
+        <ul id="login-dp" class="dropdown-menu">
+            <li>
+                 <div class="row">
+                        <div class="col-md-12">
+                            Login via
+                            <div class="social-buttons">
+                                <a href="#" class="btn btn-fb"><i class="fa fa-facebook"></i> Facebook</a>
+                                <a href="#" class="btn btn-gplus"><i class="fa fa-google-plus"></i> Google</a>
+                            </div>
+                        </div>
+                 </div>
+
+            </li>
+        </ul>
+    </li>
+{% else %}
+    <li>
+        <a href="#">Logout</a>
+    </li>
+{% endif %}
+</ul> -->
+{% include "navbar.html" %}
+<div id="result"></div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            Login via
+            <div class="social-buttons">
+                <a href="#" class="btn btn-fb"><i class="fa fa-facebook"></i> Facebook</a>
+                <a href="#" class="btn btn-gplus"><i class="fa fa-google-plus"></i> Google</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $('.btn-gplus').click(function(){
+        auth2.grantOfflineAccess().then(gplusSignInCallback);
+    })
+</script>
+
+</body>
+</html>

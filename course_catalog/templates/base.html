@@ -32,6 +32,21 @@
 
 <body>
     {% include "navbar.html" %}
+    <div class = 'flash'>
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+              
+            <ul>
+            {% for message in messages %}
+                <li> <strong> {{ message }} </strong> </li>
+            {% endfor %}
+            </ul>
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    {% block content %}
+    {% endblock %}
     <!-- jQuery -->
     <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
 

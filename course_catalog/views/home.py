@@ -7,13 +7,13 @@ from flask import session as login_session
 import random
 import string
 from gplus_login import gdisconnect
+from fb_login import fbdisconnect
 
 
 @app.route('/')
 @app.route('/departments/')
 def showDepartments():
     return render_template("base.html")
-    # return "Hello, Praveen!"
 
 
 @app.route('/login')

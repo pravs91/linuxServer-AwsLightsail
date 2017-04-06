@@ -10,8 +10,9 @@ import delete_course
 import view_course
 import json_endpoints
 import gplus_login
+import fb_login
 
 __all__ = ['db_session', 'home', 'new_department',
            'edit_department', 'delete_department', 'view_department',
            'new_course', 'edit_course', 'delete_course', 'view_course',
-           'json_endpoints', 'gplus_login']
+           'json_endpoints', 'gplus_login', 'fb_login']

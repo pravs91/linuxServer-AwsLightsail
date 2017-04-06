@@ -1,5 +1,5 @@
 from course_catalog import app
-import course_catalog.models
+from course_catalog.models import *
 from flask import Flask, render_template, request, redirect, jsonify, url_for, flash
 from db_session import session
 from flask import session as login_session
@@ -109,15 +109,9 @@ def gconnect():
 
     login_session['user_id'] = user_id
 
-    output = ''
-    output += '<h1>Welcome, '
-    output += login_session['username']
-    output += '!</h1>'
-    output += '<img src="'
-    output += login_session['picture']
-    output += ' " style = "width: 300px; height: 300px;border-radius: 150px;-webkit-border-radius: 150px;-moz-border-radius: 150px;"> '
-    flash("you are now logged in as %s" % login_session['username'])
-    print "done!"
+    output = 'Successfully logged in through Google.'
+    flash("You are now logged in as %s" % login_session['username'])
+    # print "done!"
     return output
 
 
@@ -133,7 +127,7 @@ def gdisconnect():
         response.headers['Content-Type'] = 'application/json'
         return response
     # access_token = credentials.access_token
-    print access_token
+    # print access_token
     url = 'https://accounts.google.com/o/oauth2/revoke?token=%s' % access_token
     h = httplib2.Http()
     result = h.request(url, 'GET')[0]

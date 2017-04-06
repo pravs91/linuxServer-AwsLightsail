@@ -36,7 +36,7 @@
     function gplusSignInCallback(authResult) {
         if (authResult['code']) {
           // Hide the sign-in button now that the user is authorized
-          // $('#signinButton').attr('style', 'display: none');
+          $('.login-area').attr('style', 'display: none');
           // Send the one-time-use code to the server, if the server responds, write a 'login successful' message to the web page and then redirect back to the main restaurants page
           $.ajax({
             type: 'POST',
@@ -52,16 +52,13 @@
             success: function(result) {
               // Handle or verify the server response if necessary.
               if (result) {
-                $('#result').html('Login Successful!</br>'+ result + '</br>Redirecting...')
-               setTimeout(function() {
-                window.location.href = "/departments";
-               }, 4000);
-                
-            } else if (authResult['error']) {
+                console.log(result);
+                window.location.href = "/departments";                
+              } else if (authResult['error']) {
                 console.log('There was an error: ' + authResult['error']);
-            } else {
-              $('#result').html('Failed to make a server-side call. Check your configuration and console.');
-               }
+              } else {
+                $('#result').html('Failed to make a server-side call. Check your configuration and console.');
+              }
             }
             
           }); 
@@ -72,13 +69,15 @@
 <script>
     window.fbAsyncInit = function() {
       FB.init({
-        appId      : '1832737680298755',
+        appId      : '1774429186112957',
         cookie     : true,  // enable cookies to allow the server to access 
                             // the session
         xfbml      : true,  // parse social plugins on this page
-        version    : 'v2.2' // use version 2.2
+        version    : 'v2.8' // use version 2.8
       });
+      FB.AppEvents.logPageView();
     };
+
     // Load the SDK asynchronously
     (function(d, s, id) {
       var js, fjs = d.getElementsByTagName(s)[0];
@@ -88,73 +87,79 @@
       js.src = "//connect.facebook.net/en_US/sdk.js";
       fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
-    // Here we run a very simple test of the Graph API after login is
-    // successful.  See statusChangeCallback() for when this call is made.
-    function FBsendTokenToServer() {
-      // var access_token = FB.getAuthResponse()['accessToken'];
-      var access_token;
-      FB.getLoginStatus(function(response){
-        console.log(response.status)
-        access_token = response.authResponse.accessToken;
-      })
-      console.log(access_token)
-      console.log('Welcome!  Fetching your information.... ');
+
+    // This is called with the results from from FB.getLoginStatus().
+    function statusChangeCallback(response) {
+        console.log('statusChangeCallback');
+        console.log(response);
+        // The response object is returned with a status field that lets the
+        // app know the current login status of the person.
+        // Full docs on the response object can be found in the documentation
+        // for FB.getLoginStatus().
+        if (response.status === 'connected') {
+          // Logged into your app and Facebook.
+          FBsendTokenToServer(response);
+        } else {
+          // The person is not logged into your app or we are unable to tell.
+          // document.getElementById('result').innerHTML = 'Please log into this app.';
+          FB.login(function(response){
+            if(response.authResponse){
+                FBsendTokenToServer(response);
+            } else {
+                console.log("User denied logging in with Facebook.");
+            }            
+          }, {scope: 'public_profile,email'})
+        }
+    }   
+    
+    // This function is called when someone finishes with the Login
+    // Button.  See the onlogin handler attached to it in the sample
+    // code below.
+    function checkLoginState() {
+        FB.getLoginStatus(function(response) {
+          statusChangeCallback(response);
+        });
+    }     
+
+    function FBsendTokenToServer(response) {
+      var access_token = response.authResponse.accessToken;
+      // console.log(access_token)
+      $('.login-area').attr('style', 'display: none');
+      console.log('Welcome!  Fetching your information with received access_token.... ');
       FB.api('/me', function(response) {
         console.log('Successful login for: ' + response.name);
        $.ajax({
-        type: 'POST',
-        url: '/fbconnect?state={{STATE}}',
-        processData: false,
-        data: access_token,
-        contentType: 'application/octet-stream; charset=utf-8',
-        success: function(result) {
-          // Handle or verify the server response if necessary.
-          if (result) {
-            $('#result').html('Login Successful!</br>'+ result + '</br>Redirecting...')
-           setTimeout(function() {
-            window.location.href = "/departments";
-           }, 4000);
-            
-          } else {
-          $('#result').html('Failed to make a server-side call. Check your configuration and console.');
-           }
-        }
-        
+            type: 'POST',
+            url: '/fbconnect?state={{STATE}}',
+            processData: false,
+            data: access_token,
+            headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+            },
+            contentType: 'application/octet-stream; charset=utf-8',
+            success: function(result) {
+              // Handle or verify the server response if necessary.
+              if (result) {
+                console.log(result);
+                window.location.href = "/departments";                
+              } else {
+                $('#result').html('Failed to make a server-side call. Check your configuration and console.');
+               }
+            }        
         });
       });
     }
+      // FB.logout(function(response){
+      //   console.log("You have been  logged out.")
+      // })
+
 </script>
 
-<!-- <ul class="nav navbar-nav navbar-right">
-{% if username not in session %}
-    <li class="dropdown">
-      <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b>Login</b> <span class="caret"></span></a>
-        <ul id="login-dp" class="dropdown-menu">
-            <li>
-                 <div class="row">
-                        <div class="col-md-12">
-                            Login via
-                            <div class="social-buttons">
-                                <a href="#" class="btn btn-fb"><i class="fa fa-facebook"></i> Facebook</a>
-                                <a href="#" class="btn btn-gplus"><i class="fa fa-google-plus"></i> Google</a>
-                            </div>
-                        </div>
-                 </div>
-
-            </li>
-        </ul>
-    </li>
-{% else %}
-    <li>
-        <a href="#">Logout</a>
-    </li>
-{% endif %}
-</ul> -->
 {% include "navbar.html" %}
-<div id="result"></div>
+<div class="container" id="result"></div>
 
-<div class="container">
-    <div class="row">
+<div class="container login-area">
+    <div class="row pull-right">
         <div class="col-md-12">
             Login via
             <div class="social-buttons">
@@ -169,6 +174,9 @@
 <script>
     $('.btn-gplus').click(function(){
         auth2.grantOfflineAccess().then(gplusSignInCallback);
+    })
+    $('.btn-fb').click(function(){
+        checkLoginState();
     })
 </script>
 

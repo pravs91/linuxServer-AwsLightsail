@@ -21,7 +21,7 @@
                     <li>
                         <a href="{{ url_for('newDepartment') }}">+ New Department</a>
                     </li>
-                    <!-- TODO show iff there's at least one department-->
+                    <!-- TODO show iff there's at least one department for this user-->
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">+ New Course <span class="caret"></span></a>
                         <ul class="dropdown-menu">
@@ -38,9 +38,13 @@
                     <a href="{{ url_for('showLogin') }}">Login</a>
                 </li>
                 {% else %}
-                <li>
-                    <a href="{{ url_for('logout') }}">Logout</a>
-                </li>                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <img src="{{session['picture']}}" class="profile-image img-circle"> {{session['username']}}<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{ url_for('logout') }}"><i class="fa fa-sign-out"></i> Logout</a></li>
+                    </ul>
+                </li>                  
                 {% endif %}
             </ul>
         </div>

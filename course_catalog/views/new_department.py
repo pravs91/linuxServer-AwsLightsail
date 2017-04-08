@@ -20,7 +20,6 @@ def newDepartment():
             return render_template("new_department.html", error=error,
                                    name=name, address=address,
                                    imgURL=imgURL, description=description)
-        session.rollback()
         newDepartment = Department(name=name, address=address, img_url=imgURL,
                                    description=description,
                                    user_id=login_session['user_id'])
@@ -28,6 +27,5 @@ def newDepartment():
         session.commit()
         flash("Successfully created new department %s" % newDepartment.name)
         return redirect(url_for('showDepartments'))
-
     else:
         return render_template("new_department.html")

@@ -3,6 +3,7 @@ from course_catalog.models import *
 from flask import Flask, render_template, request, redirect, jsonify, url_for, flash
 from db_session import session
 from flask import session as login_session
+from sqlalchemy import asc
 
 import random
 import string
@@ -13,7 +14,9 @@ from fb_login import fbdisconnect
 @app.route('/')
 @app.route('/departments/')
 def showDepartments():
-    return render_template("base.html")
+    departments = session.query(Department).order_by(asc(Department.name))
+    return render_template("dept_page.html", departments=departments,
+                           curr_dept=departments[0])
 
 
 @app.route('/login')

@@ -1,0 +1,14 @@
+<div class="col-md-3">  
+    <div data-spy="affix" data-offset-top="200" id="dept-sidebar">
+        <p class="lead">Departments</p>
+        <div class="list-group">
+            {% for dept in departments %}
+                {% if dept.id == curr_dept.id %}
+                <a href="{{ url_for('viewDepartment', dept_id = dept.id) }}" class="list-group-item active">{{dept.name}}</a>
+                {% else %}
+                <a href="{{ url_for('viewDepartment', dept_id = dept.id) }}" class="list-group-item">{{dept.name}}</a>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>

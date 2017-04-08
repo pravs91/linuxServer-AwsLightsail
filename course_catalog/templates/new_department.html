@@ -19,11 +19,12 @@
         <label for="description">Description</label>
         <textarea class="form-control" id="description" rows="6" name="description" value="{{description}}"></textarea>
     </div>
-    <div class="form-group error">{{error}}</div>
+    <div class="form-group" id="error-msg">{{error}}</div>
     <button class="btn btn-default" id="cancel-button">Cancel</button>
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 </div>
+
 <script type="text/javascript">
     // go back to previous page on clicking cancel
     var button = document.getElementById('cancel-button');

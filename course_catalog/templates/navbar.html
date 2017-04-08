@@ -15,19 +15,26 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li>
+                    <!-- TODO add README here -->
                     <a href="#">About</a>
                 </li>
                 {% if 'username' in session %}
                     <li>
                         <a href="{{ url_for('newDepartment') }}">+ New Department</a>
                     </li>
-                    <!-- TODO show iff there's at least one department for this user-->
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">+ New Course <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <!-- TODO create for loop with departments -->
-                            <li><a href="#">ECE</a></li>
-                            <li><a href="#">Computer Science and Engineering </a></li>
+                            <!-- create for loop with departments of this user-->
+                            {% set curr_user_depts = departments.filter_by(user_id=session['user_id']) %}
+                            {% if curr_user_depts.count() > 0 %}
+                                {% for dept in curr_user_depts %}
+                                    <li><a href="#">{{dept.name}}</a></li>
+                                {% endfor %}
+                            {% else %}
+                                <!-- if the user does not have any departments -->
+                                <li><a href="{{ url_for('newDepartment') }}">Create a new department first!</a></li>
+                            {% endif %}
                         </ul>
                     </li>                    
                 {% endif %}

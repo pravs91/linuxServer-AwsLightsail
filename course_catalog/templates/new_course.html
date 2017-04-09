@@ -2,18 +2,38 @@
 {% block content %}
 <div class="container">
 <form method="POST">
-    <h3>Create a new department</h3>
+    <h3>Create a new course</h3>
+    <div class="form-group">
+        <label for="department">Department</label>
+        <p class=".form-control-static">{{curr_dept.name}}</p>
+    </div>
     <div class="form-group">
         <label for="name">Name</label>
         <input type="text" class="form-control" id="name" placeholder="Enter name" name="name" value="{{name}}">
     </div>
     <div class="form-group">
-        <label for="address">Address</label>
-        <input type="text" class="form-control" id="address" placeholder="Enter address" name="address" value="{{address}}">
+        <label for="id">Course Code</label>
+        <input type="text" class="form-control" id="id" placeholder="Enter course code" name="id" value="{{id}}">
+        <small class="form-text text-muted">Enter a unique course code, maximum 6 characters. e.g. CS537 </small>
+    </div>
+    <div class="form-group">
+        <label for="professor">Professor</label>
+        <input type="text" class="form-control" id="professor" placeholder="Enter professor name" name="professor" 
+            value="{{professor}}">
     </div>
     <div class="form-group">
         <label for="img_url">Image URL</label>
         <input type="text" class="form-control" id="img_url" placeholder="Enter a URL" name="img_url" value="{{img_url}}">
+    </div>
+    <div class="form-group">
+        <label for="credits">Credits</label>
+        <input type="text" class="form-control" id="credits" placeholder="Enter credits" name="credits" value="{{credits}}">
+        <small class="form-text text-muted">Can be a maximum of 5</small>
+    </div>
+    <div class="form-group">
+        <label for="max_capacity">Maximum capacity</label>
+        <input type="text" class="form-control" id="max_capacity" placeholder="Enter maximum capacity" name="max_capacity" 
+            value="{{max_capacity}}">
     </div>
     <div class="form-group">
         <label for="description">Description</label>
@@ -27,7 +47,6 @@
     <button type="submit" class="btn btn-primary" id="submit-button">Submit</button>
 </form>
 </div>
-
 <!-- jQuery -->
 <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
 

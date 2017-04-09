@@ -29,7 +29,7 @@
                             {% set curr_user_depts = departments.filter_by(user_id=session['user_id']) %}
                             {% if curr_user_depts.count() > 0 %}
                                 {% for dept in curr_user_depts %}
-                                    <li><a href="#">{{dept.name}}</a></li>
+                                    <li><a href="{{ url_for('newCourse', dept_id = dept.id) }}">{{dept.name}}</a></li>
                                 {% endfor %}
                             {% else %}
                                 <!-- if the user does not have any departments -->

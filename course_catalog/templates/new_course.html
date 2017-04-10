@@ -3,6 +3,8 @@
 <div class="container">
 <form method="POST">
     <h3>Create a new course</h3>
+    <div class="form-group" id="error-msg">{{error}}</div>
+
     <div class="form-group">
         <label for="department">Department</label>
         <p class=".form-control-static">{{curr_dept.name}}</p>
@@ -37,12 +39,10 @@
     </div>
     <div class="form-group">
         <label for="description">Description</label>
-        <textarea class="form-control" id="description" rows="6" name="description" value="{{description}}"></textarea>
+        <textarea class="form-control" id="description" rows="6" name="description">{{description}}</textarea>
     </div>
     <small class="form-text text-muted">None of the fields can be empty.</small>
-
-    <div class="form-group" id="error-msg">{{error}}</div>
-
+    <br>
     <button class="btn btn-default" id="cancel-button">Cancel</button>
     <button type="submit" class="btn btn-primary" id="submit-button">Submit</button>
 </form>

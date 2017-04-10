@@ -10,5 +10,6 @@ from sqlalchemy import asc
 def viewDepartment(dept_id):
     departments = session.query(Department).order_by(asc(Department.name))
     curr_dept = session.query(Department).filter_by(id=dept_id).one()
+    courses = session.query(Course).filter_by(department_id=dept_id)
     return render_template("dept_page.html", departments=departments,
-                           curr_dept=curr_dept)
+                           curr_dept=curr_dept, courses=courses)

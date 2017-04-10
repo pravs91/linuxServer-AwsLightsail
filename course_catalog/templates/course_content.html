@@ -1,0 +1,14 @@
+<div class="col-md-9">
+
+    <div class="thumbnail">
+        <img class="img-responsive course-image" src="{{ curr_course.img_url }}" alt="image for {{curr_course.name}}">
+        <div class="caption-full">
+            <h4>{{curr_course.name}}</h4>
+            <pre><span class="inner-pre">{{curr_course.description | safe}}</span></pre>
+        </div>
+        <div class="ratings">
+            <p class="pull-right">{{curr_course.credits}} credits</p>
+            <p><strong>Professor: </strong>{{curr_course.professor}}</p>
+        </div>
+    </div>
+</div>

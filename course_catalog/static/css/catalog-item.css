@@ -30,3 +30,7 @@ body {
 footer {
     margin: 50px 0;
 }
+
+.thumbnail > .course-image {
+    height: 380px;
+}

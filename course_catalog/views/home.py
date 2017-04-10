@@ -15,8 +15,9 @@ from fb_login import fbdisconnect
 @app.route('/departments/')
 def showDepartments():
     departments = session.query(Department).order_by(asc(Department.name))
+    courses = session.query(Course).filter_by(department_id=departments[0].id)
     return render_template("dept_page.html", departments=departments,
-                           curr_dept=departments[0])
+                           curr_dept=departments[0], courses=courses)
 
 
 @app.route('/login')

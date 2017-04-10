@@ -34,3 +34,18 @@ footer {
 .thumbnail > .course-image {
     height: 380px;
 }
+
+@media (min-width: 979px) {
+  #course-sidebar.affix-top {
+    position: static;
+    margin-top:0px;
+    width: 100%;
+    max-width: 100%;
+  }
+  
+  #course-sidebar.affix {
+    position: fixed;
+    top:70px;
+    width:266px;
+  }
+}

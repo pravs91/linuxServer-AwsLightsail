@@ -1,5 +1,5 @@
 <div class="col-md-3">  
-    <div data-spy="affix" data-offset-top="200" id="dept-sidebar">
+    <div data-spy="affix" data-offset-top="200" id="course-sidebar">
         <a href="{{ url_for('viewDepartment', dept_id = curr_dept.id) }}" class="lead">{{curr_dept.name}}</p>
         <div class="list-group">
             {% for course in dept_courses %}

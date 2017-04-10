@@ -11,8 +11,19 @@ from sqlalchemy.exc import DBAPIError, SQLAlchemyError
 def newCourse(dept_id):
     if 'username' not in login_session:
         return redirect('/')
-    departments = session.query(Department).order_by(asc(Department.name))
-    curr_dept = session.query(Department).filter_by(id=dept_id).one()
+
+    # error 404 if dept not found
+    try:
+        departments = session.query(Department).order_by(asc(Department.name))
+        curr_dept = session.query(Department).filter_by(id=dept_id).one()
+    except (DBAPIError, SQLAlchemyError) as e:
+        return "Error 404! Requested URL was not found."
+
+    # check if dept belongs to current user
+    if curr_dept.user_id != login_session['user_id']:
+        flash("You do not have permissions to add courses to this department.")
+        return redirect(url_for('showDepartments'))
+
     if request.method == "POST":
         name = request.form['name']
         id = request.form['id']
@@ -24,17 +35,21 @@ def newCourse(dept_id):
 
         fields = [departments, curr_dept, name, id, professor, img_url,
                   credits, max_capacity, description]
+
+        # check if course code already exists
         id_exists = session.query(Course).filter_by(id=id)
         if id_exists.count() > 0:
             error = "This course code already exists!"
             print error
             return report_error(fields, error)
 
+        # validate course code length
         if len(id) > 6:
             error = "Course code cannot be more than 6 characters!"
             print error
             return report_error(fields, error)
 
+        # validate credits
         try:
             int_credits = int(credits)
             if int_credits > 5:
@@ -44,6 +59,7 @@ def newCourse(dept_id):
             print error
             return report_error(fields, error)
 
+        # validate capacity
         try:
             int_capacity = int(max_capacity)
         except ValueError:
@@ -51,6 +67,7 @@ def newCourse(dept_id):
             print error
             return report_error(fields, error)
 
+        # create new course and commit to DB
         try:
             new_course = Course(name=name,
                                 id=id,
@@ -63,6 +80,7 @@ def newCourse(dept_id):
                                 user_id=login_session['user_id'])
             session.add(new_course)
             session.commit()
+        # handle database exceptions
         except (DBAPIError, SQLAlchemyError) as e:
             flash("An exception occurred in the database. Please try again!")
             return redirect(url_for('showDepartments'))

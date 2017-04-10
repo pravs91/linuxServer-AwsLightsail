@@ -17,13 +17,14 @@ def newDepartment():
         img_url = request.form['img_url']
         description = request.form['description']
 
+        # create new department and commit to DB
         try:
             newDepartment = Department(name=name, address=address, img_url=img_url,
                                        description=description,
                                        user_id=login_session['user_id'])
             session.add(newDepartment)
             session.commit()
-
+        # handle database exceptions
         except (DBAPIError, SQLAlchemyError) as e:
             flash("An exception occurred in the database. Please try again!")
             return redirect(url_for('showDepartments'))

@@ -10,7 +10,8 @@ from sqlalchemy.exc import DBAPIError, SQLAlchemyError
 @app.route('/departments/<int:dept_id>/courses/new/', methods=['GET', 'POST'])
 def newCourse(dept_id):
     if 'username' not in login_session:
-        return redirect('/')
+        flash("Please login to continue.")
+        return redirect('/login')
 
     # error 404 if dept not found
     try:

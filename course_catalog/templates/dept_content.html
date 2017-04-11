@@ -35,7 +35,14 @@
     <div class="row">
         <div class="col-md-12">
             <h3>{{curr_dept.name}}</h3>
-            <p><strong>Located at:</strong> {{curr_dept.address}}</p>
+            <p><strong>Located at: </strong>{{curr_dept.address}}</p>
+            {% if ('username' in session) and (session['user_id'] == curr_dept.user_id) %}
+            <div>
+                <a href="{{url_for('editDepartment', dept_id=curr_dept.id)}}" class="btn btn-default"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a>
+                <a href="{{url_for('deleteDepartment', dept_id=curr_dept.id)}}" class="btn btn-default"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</a>
+            </div>
+            {% endif %}
+            <br>
             <pre><span class="inner-pre">{{curr_dept.description | safe}}</span></pre>
         </div>
 

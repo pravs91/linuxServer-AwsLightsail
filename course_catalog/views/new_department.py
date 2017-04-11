@@ -10,7 +10,8 @@ from sqlalchemy.exc import DBAPIError, SQLAlchemyError
 @app.route('/departments/new/', methods=['GET', 'POST'])
 def newDepartment():
     if 'username' not in login_session:
-        return redirect('/')
+        flash("Please login to continue.")
+        return redirect('/login')
     if request.method == 'POST':
         name = request.form['name']
         address = request.form['address']

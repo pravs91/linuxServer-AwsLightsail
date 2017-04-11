@@ -2,7 +2,11 @@
 {% block content %}
 <div class="container">
 <form method="POST">
+    {% if edit %}
+    <h3>Edit department</h3>
+    {% else %}
     <h3>Create a new department</h3>
+    {% endif %}
     <div class="form-group">
         <label for="name">Name</label>
         <input type="text" class="form-control" id="name" placeholder="Enter name" name="name" value="{{name}}">
@@ -36,6 +40,14 @@
     // go to prev page on clicking cancel
     $(function(){
         $('#submit-button').attr('disabled', 'disabled');
+        // use this to detect pre-filled values in edit
+        $('.form-group > input').each(function() {
+            if ($(this).val() != '' || ($('#description')[0].value != "")) {
+                $('#submit-button').removeAttr('disabled');
+            }
+        });
+
+        // disable submit button if any input is empty
         $('.form-group > input, textarea').keyup(function() {
 
             var empty = false;

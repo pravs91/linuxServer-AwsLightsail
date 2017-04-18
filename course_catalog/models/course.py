@@ -25,7 +25,7 @@ class Course(Base):
         return {
             'name': self.name,
             'id': self.id,
-            'department_id': self.department_id,
+            'department': self.department.name,
             'professor': self.professor,
             'credits': self.credits,
             'max_capacity': self.max_capacity,

@@ -13,6 +13,7 @@ def deleteDepartment(dept_id):
         flash("Please login to continue.")
         return redirect('/login')
     try:
+        # retrieve dept to delete
         dept_to_delete = session.query(Department).filter_by(id=dept_id).one()
         departments = session.query(Department).order_by(asc(Department.name))
     except (DBAPIError, SQLAlchemyError) as e:
@@ -24,6 +25,11 @@ def deleteDepartment(dept_id):
         return redirect(url_for('viewDepartment', dept_id=dept_to_delete.id))
 
     if request.method == 'POST':
+        # delete courses of this dept
+        dept_courses = session.query(Course).filter_by(department_id=dept_id)
+        for course in dept_courses:
+            session.delete(course)
+        # delete dept
         session.delete(dept_to_delete)
         flash("You have successfully deleted '%s'" % dept_to_delete.name)
         session.commit()

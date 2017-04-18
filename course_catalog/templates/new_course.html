@@ -2,7 +2,11 @@
 {% block content %}
 <div class="container">
 <form method="POST">
+    {% if edit %}
+    <h3>Edit course</h3>
+    {% else %}
     <h3>Create a new course</h3>
+    {% endif %}
     <div class="form-group" id="error-msg">{{error}}</div>
 
     <div class="form-group">
@@ -50,30 +54,7 @@
 <!-- jQuery -->
 <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
 
-<script type="text/javascript">
-    // disable submit button if input is empty using jquery
-    // go to prev page on clicking cancel
-    $(function(){
-        $('#submit-button').attr('disabled', 'disabled');
-        $('.form-group > input, textarea').keyup(function() {
-
-            var empty = false;
-            $('.form-group > input').each(function() {
-                if ($(this).val() == '' || ($('#description')[0].value == "")) {
-                    empty = true;
-                }
-            });
-            if (empty) {
-                $('#submit-button').attr('disabled', 'disabled'); 
-            } else {
-                $('#submit-button').removeAttr('disabled'); 
-            }
-        });
-        $('#cancel-button').on('click',function(){
-            window.location.href = window.history.back();
-        })
-    });
-
-</script>
+<!-- Script to ensure all input fields are filled -->
+<script src="{{ url_for('static', filename='js/valid_inputs.js') }}"></script>
 
 {% endblock %}

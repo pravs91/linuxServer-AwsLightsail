@@ -22,6 +22,7 @@ def showDepartments():
 
 @app.route('/login')
 def showLogin():
+    # set state to validate AJAX requests
     state = ''.join(random.choice(string.ascii_uppercase + string.digits)
                     for x in xrange(32))
     login_session['state'] = state
@@ -31,6 +32,7 @@ def showLogin():
 
 @app.route('/logout')
 def logout():
+    # common logout method
     if 'provider' in login_session:
         if login_session['provider'] == 'google':
             gdisconnect()

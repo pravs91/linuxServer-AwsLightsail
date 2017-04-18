@@ -3,7 +3,16 @@
     <div class="thumbnail">
         <img class="img-responsive course-image" src="{{ curr_course.img_url }}" alt="image for {{curr_course.name}}">
         <div class="caption-full">
-            <h4>{{curr_course.name}}</h4>
+            <h4>{{curr_course.id}} - {{curr_course.name}}</h4>
+            {% if ('username' in session) and (session['user_id'] == curr_course.user_id) %}
+            <div>
+                <a href="{{url_for('editCourse', dept_id=curr_dept.id, course_id=curr_course.id )}}" class="btn btn-default">
+                    <i class="fa fa-pencil" aria-hidden="true"></i> Edit</a>
+                <a href="{{url_for('deleteCourse', dept_id=curr_dept.id, course_id=curr_course.id )}}" class="btn btn-default">
+                    <i class="fa fa-trash-o" aria-hidden="true"></i> Delete</a>
+            </div>
+            {% endif %}
+            <br>
             <pre><span class="inner-pre">{{curr_course.description | safe}}</span></pre>
         </div>
         <div class="ratings">

@@ -13,6 +13,7 @@ def editDepartment(dept_id):
         flash("Please login to continue.")
         return redirect('/login')
     try:
+        # retrieve dept to edit
         dept_to_edit = session.query(Department).filter_by(id=dept_id).one()
         departments = session.query(Department).order_by(asc(Department.name))
     except (DBAPIError, SQLAlchemyError) as e:

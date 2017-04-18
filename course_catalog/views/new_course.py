@@ -41,13 +41,11 @@ def newCourse(dept_id):
         id_exists = session.query(Course).filter_by(id=id)
         if id_exists.count() > 0:
             error = "This course code already exists!"
-            print error
             return report_error(fields, error)
 
         # validate course code length
         if len(id) > 6:
             error = "Course code cannot be more than 6 characters!"
-            print error
             return report_error(fields, error)
 
         # validate credits
@@ -57,7 +55,6 @@ def newCourse(dept_id):
                 raise ValueError
         except ValueError:
             error = "Please enter a valid number of credits"
-            print error
             return report_error(fields, error)
 
         # validate capacity
@@ -65,7 +62,6 @@ def newCourse(dept_id):
             int_capacity = int(max_capacity)
         except ValueError:
             error = "Please enter a valid integer for capacity."
-            print error
             return report_error(fields, error)
 
         # create new course and commit to DB

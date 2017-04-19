@@ -5,14 +5,12 @@ from db_session import session
 from sqlalchemy import asc
 from flask import session as login_session
 from sqlalchemy.exc import DBAPIError, SQLAlchemyError
+from user_utils import login_required
 
 
 @app.route('/departments/<int:dept_id>/courses/new/', methods=['GET', 'POST'])
+@login_required
 def newCourse(dept_id):
-    if 'username' not in login_session:
-        flash("Please login to continue.")
-        return redirect('/login')
-
     # error 404 if dept not found
     try:
         departments = session.query(Department).order_by(asc(Department.name))

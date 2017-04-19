@@ -5,13 +5,12 @@ from db_session import session
 from sqlalchemy import asc
 from sqlalchemy.exc import DBAPIError, SQLAlchemyError
 from flask import session as login_session
+from user_utils import login_required
 
 
 @app.route('/departments/<int:dept_id>/delete/', methods=['GET', 'POST'])
+@login_required
 def deleteDepartment(dept_id):
-    if 'username' not in login_session:
-        flash("Please login to continue.")
-        return redirect('/login')
     try:
         # retrieve dept to delete
         dept_to_delete = session.query(Department).filter_by(id=dept_id).one()

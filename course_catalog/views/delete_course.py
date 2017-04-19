@@ -5,13 +5,12 @@ from db_session import session
 from sqlalchemy import asc, and_
 from sqlalchemy.exc import DBAPIError, SQLAlchemyError
 from flask import session as login_session
+from user_utils import login_required
 
 
 @app.route('/departments/<int:dept_id>/courses/<course_id>/delete/', methods=['GET', 'POST'])  # NOQA
+@login_required
 def deleteCourse(dept_id, course_id):
-    if 'username' not in login_session:
-        flash("Please login to continue.")
-        return redirect('/login')
     # retrieve course for given dept from DB
     try:
         departments = session.query(Department).order_by(asc(Department.name))

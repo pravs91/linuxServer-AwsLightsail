@@ -1,4 +1,3 @@
-README.txt
 course_catalog/__init__.py
 course_catalog/database_setup.py
 course_catalog.egg-info/PKG-INFO

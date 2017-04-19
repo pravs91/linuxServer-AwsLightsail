@@ -1,6 +1,8 @@
 from course_catalog.models import *
 from db_session import session
 from flask import session as login_session
+from functools import wraps
+from flask import Flask, render_template, request, redirect, jsonify, url_for, flash
 
 
 # User Helper Functions
@@ -26,3 +28,16 @@ def getUserID(email):
         return user.id
     except:
         return None
+
+# view decorator to validate login
+
+
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'username' in login_session:
+            return f(*args, **kwargs)
+        else:
+            flash("Please login to continue.")
+            return redirect(url_for('showLogin'))
+    return decorated_function

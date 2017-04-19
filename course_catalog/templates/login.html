@@ -160,6 +160,18 @@
 <div class="container" id="result"></div>
 
 <div class="container login-area">
+    <div class = 'flash'>
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+              
+            <ul>
+            {% for message in messages %}
+                <li> <strong> {{ message }} </strong> </li>
+            {% endfor %}
+            </ul>
+            {% endif %}
+        {% endwith %}
+    </div>
     <div class="row pull-right">
         <div class="col-md-12">
             Login via

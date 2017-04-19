@@ -5,13 +5,12 @@ from db_session import session
 from flask import session as login_session
 from sqlalchemy import asc
 from sqlalchemy.exc import DBAPIError, SQLAlchemyError
+from user_utils import login_required
 
 
 @app.route('/departments/new/', methods=['GET', 'POST'])
+@login_required
 def newDepartment():
-    if 'username' not in login_session:
-        flash("Please login to continue.")
-        return redirect('/login')
     if request.method == 'POST':
         name = request.form['name']
         address = request.form['address']

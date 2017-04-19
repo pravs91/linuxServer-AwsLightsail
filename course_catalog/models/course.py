@@ -4,6 +4,11 @@ from base import Base
 from user import User
 from department import Department
 
+# Use cascade property for data integrity (i.e. delete courses if dept is
+# deleted) --> http://docs.sqlalchemy.org/en/latest/orm/cascades.html
+# Also use relationship("Department", back_populates="courses") so Department
+# has all courses
+
 
 class Course(Base):
     __tablename__ = 'course'

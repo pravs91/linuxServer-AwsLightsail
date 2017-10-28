@@ -25,6 +25,6 @@ $(function(){
         }
     });
     $('#cancel-button').on('click',function(){
-        window.location.href = window.history.back();
+        window.history.go(-1);
     })
 });

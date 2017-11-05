@@ -9,16 +9,25 @@ import random
 import string
 from gplus_login import gdisconnect
 from fb_login import fbdisconnect
-
+from sqlalchemy.exc import DBAPIError, SQLAlchemyError
 
 @app.route('/')
 @app.route('/departments/')
 def showDepartments():
-    departments = session.query(Department).order_by(asc(Department.name))
-    courses = session.query(Course).filter_by(department_id=departments[0].id)
-    return render_template("dept_page.html", departments=departments,
+    try:
+        departments = session.query(Department).order_by(asc(Department.name))
+        courses = session.query(Course).filter_by(department_id=departments[0].id)
+    except (DBAPIError, SQLAlchemyError) as e:
+        return "Error 404, requested URL was not found! Exception occured in Database."
+    except IndexError: # when no departments are found
+        if 'provider' in login_session:
+            flash("There are no departments or courses. Please start creating them!")
+        else:
+            flash("There are no departments or courses. Please login to get started!")
+        return render_template("dept_page.html", departments=None, curr_dept=None, courses=None)
+    else:
+        return render_template("dept_page.html", departments=departments,
                            curr_dept=departments[0], courses=courses)
-
 
 @app.route('/login')
 def showLogin():

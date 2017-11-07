@@ -29,6 +29,7 @@ def editDepartment(dept_id):
         dept_to_edit.img_url = request.form['img_url']
         dept_to_edit.description = request.form['description']
         flash("You have successfully edited %s" % dept_to_edit.name)
+        session.commit()
         return redirect(url_for('viewDepartment', dept_id=dept_id))
     else:
         return render_template("new_department.html", departments=departments,

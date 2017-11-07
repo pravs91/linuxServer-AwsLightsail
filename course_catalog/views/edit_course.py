@@ -75,6 +75,7 @@ def editCourse(dept_id, course_id):
         curr_course.credits = credits
         curr_course.max_capacity = max_capacity
         curr_course.description = description
+        session.commit()
         flash("You have successfully edited %s" % curr_course.name)
         return redirect(url_for('viewCourse', dept_id=dept_id, course_id=curr_course.id))
     else:

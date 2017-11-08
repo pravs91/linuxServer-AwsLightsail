@@ -4,6 +4,7 @@ The application is deployed on an AWS Lightsail server instance.
 
 ## Server details
 Public static IP - 52.26.189.38
+ 
 URL - http://ec2-52-26-189-38.us-west-2.compute.amazonaws.com/
 
 ## Software and configuration

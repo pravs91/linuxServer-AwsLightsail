@@ -24,7 +24,7 @@ def deleteCourse(dept_id, course_id):
 
     # check if course belongs to current user
     if curr_course.user_id != login_session['user_id']:
-        flash("You do not have permissions to edit this course.")
+        flash("You do not have permissions to delete this course.")
         return redirect(url_for('viewCourse', dept_id=dept_id, course_id=course_id))
 
     if request.method == 'POST':

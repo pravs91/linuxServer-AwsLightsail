@@ -20,7 +20,7 @@ def editDepartment(dept_id):
 
     # check if dept belongs to curr user
     if dept_to_edit.user_id != login_session['user_id']:
-        flash("You do not have permissions to edit %s") % dept_to_edit.name
+        flash("You do not have permissions to edit %s" % dept_to_edit.name)
         return redirect(url_for('viewDepartment', dept_id=dept_to_edit.id))
 
     if request.method == 'POST':

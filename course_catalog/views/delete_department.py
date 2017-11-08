@@ -20,7 +20,7 @@ def deleteDepartment(dept_id):
 
     # check if dept belongs to curr user
     if dept_to_delete.user_id != login_session['user_id']:
-        flash("You do not have permissions to delete %s") % dept_to_delete.name
+        flash("You do not have permissions to delete %s" % dept_to_delete.name)
         return redirect(url_for('viewDepartment', dept_id=dept_to_delete.id))
 
     if request.method == 'POST':
